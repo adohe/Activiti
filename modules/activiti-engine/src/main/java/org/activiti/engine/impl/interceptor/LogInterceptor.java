@@ -13,32 +13,27 @@
 
 package org.activiti.engine.impl.interceptor;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 /**
  * @author Tom Baeyens
  */
 public class LogInterceptor extends AbstractCommandInterceptor {
-  
-  private static Logger log = LoggerFactory.getLogger(LogInterceptor.class);
 
-  public <T> T execute(CommandConfig config, Command<T> command) {
-    if (!log.isDebugEnabled()) {
-      // do nothing here if we cannot log
-      return next.execute(config, command);
+    private static Logger LOGGER = LoggerFactory.getLogger(LogInterceptor.class);
+
+    public <T> T execute(CommandConfig config, Command<T> command) {
+        LOGGER.info("\n");
+        LOGGER.info("--- starting {} --------------------------------------------------------",
+            command.getClass().getSimpleName());
+
+        try {
+            return next.execute(config, command);
+        } finally {
+            LOGGER.info("--- {} finished --------------------------------------------------------",
+                command.getClass().getSimpleName());
+            LOGGER.info("\n");
+        }
     }
-    log.debug("\n");
-    log.debug("--- starting {} --------------------------------------------------------", command.getClass().getSimpleName());
-    try {
-
-      return next.execute(config, command);
-
-    } finally {
-      log.debug("--- {} finished --------------------------------------------------------", command.getClass().getSimpleName());
-      log.debug("\n");
-    }
-  }
 }

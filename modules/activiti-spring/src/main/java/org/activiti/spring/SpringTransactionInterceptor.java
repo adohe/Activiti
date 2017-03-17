@@ -28,7 +28,9 @@ import org.springframework.transaction.support.TransactionTemplate;
  * @author Tom Baeyens
  */
 public class SpringTransactionInterceptor extends AbstractCommandInterceptor {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SpringTransactionInterceptor.class);
+
+    private static final Logger          LOGGER = LoggerFactory
+                                                    .getLogger(SpringTransactionInterceptor.class);
 
     protected PlatformTransactionManager transactionManager;
 
@@ -60,7 +62,8 @@ public class SpringTransactionInterceptor extends AbstractCommandInterceptor {
             case REQUIRES_NEW:
                 return TransactionTemplate.PROPAGATION_REQUIRES_NEW;
             default:
-                throw new ActivitiIllegalArgumentException("Unsupported transaction propagation: " + config.getTransactionPropagation());
+                throw new ActivitiIllegalArgumentException("Unsupported transaction propagation: "
+                                                           + config.getTransactionPropagation());
         }
     }
 }
