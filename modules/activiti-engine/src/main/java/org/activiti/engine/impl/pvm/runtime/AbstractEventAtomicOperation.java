@@ -18,13 +18,17 @@ import java.util.List;
 import org.activiti.engine.delegate.ExecutionListener;
 import org.activiti.engine.impl.pvm.PvmException;
 import org.activiti.engine.impl.pvm.process.ScopeImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
  * @author Tom Baeyens
  */
 public abstract class AbstractEventAtomicOperation implements AtomicOperation {
-  
+
+  private static Logger log = LoggerFactory.getLogger(AbstractEventAtomicOperation.class);
+
   public boolean isAsync(InterpretableExecution execution) {
     return false;
   }
@@ -39,6 +43,10 @@ public abstract class AbstractEventAtomicOperation implements AtomicOperation {
       execution.setEventSource(scope);
       ExecutionListener listener = exectionListeners.get(executionListenerIndex);
       try {
+        String name = execution.getCurrentActivityName();
+        if (name != null && !name.isEmpty()) {
+          log.info("try to call listener with event {} on activity {}", getEventName(), name);
+        }
         listener.notify(execution);
       } catch (RuntimeException e) {
         throw e;

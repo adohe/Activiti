@@ -24,6 +24,8 @@ import org.activiti.engine.impl.pvm.PvmActivity;
 import org.activiti.engine.impl.pvm.delegate.ActivityExecution;
 import org.activiti.engine.impl.pvm.delegate.CompositeActivityBehavior;
 import org.activiti.engine.impl.pvm.process.ActivityImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -33,7 +35,9 @@ import org.activiti.engine.impl.pvm.process.ActivityImpl;
  * @author Joram Barrez
  */
 public class SubProcessActivityBehavior extends AbstractBpmnActivityBehavior implements CompositeActivityBehavior {
-  
+
+  private static Logger log = LoggerFactory.getLogger(SubProcessActivityBehavior.class);
+
   public void execute(ActivityExecution execution) throws Exception {
     PvmActivity activity = execution.getActivity();
     ActivityImpl initialActivity = (ActivityImpl) activity.getProperty(BpmnParse.PROPERTYNAME_INITIAL);
@@ -64,6 +68,7 @@ public class SubProcessActivityBehavior extends AbstractBpmnActivityBehavior imp
       execution.removeVariablesLocal(dataObjectVars.keySet());
     }
 
+    log.info("Subprocess {} comes to end", execution.getCurrentActivityName());
     bpmnActivityBehavior.performDefaultOutgoingBehavior(execution);
   }
 

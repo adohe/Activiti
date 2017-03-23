@@ -52,12 +52,11 @@ public class ExclusiveGatewayActivityBehavior extends GatewayActivityBehavior {
    */
   @Override
   protected void leave(ActivityExecution execution) {
-    
-    if (log.isDebugEnabled()) {
-      log.debug("Leaving activity '{}'", execution.getActivity().getId());
-    }
+
+    log.info("Leaving exclusive gateway '{}'", execution.getActivity().getId());
     
     PvmTransition outgoingSeqFlow = null;
+    // we don't use any default flow
     String defaultSequenceFlow = (String) execution.getActivity().getProperty("default");
     Iterator<PvmTransition> transitionIterator = execution.getActivity().getOutgoingTransitions().iterator();
     while (outgoingSeqFlow == null && transitionIterator.hasNext()) {
@@ -80,6 +79,8 @@ public class ExclusiveGatewayActivityBehavior extends GatewayActivityBehavior {
     }
     
     if (outgoingSeqFlow != null) {
+      log.info("exclusive gateway {} will take flow with source '{}' and destination '{}'",
+              execution.getActivity().getId(), outgoingSeqFlow.getSource().getId(), outgoingSeqFlow.getDestination().getId());
       execution.take(outgoingSeqFlow);
     } else {
       

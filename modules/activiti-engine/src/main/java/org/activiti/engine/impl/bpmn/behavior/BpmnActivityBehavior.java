@@ -111,9 +111,8 @@ public class BpmnActivityBehavior implements Serializable {
   protected void performOutgoingBehavior(ActivityExecution execution, 
           boolean checkConditions, boolean throwExceptionIfExecutionStuck, List<ActivityExecution> reusableExecutions) {
 
-    if (log.isDebugEnabled()) {
-      log.debug("Leaving activity '{}'", execution.getActivity().getId());
-    }
+    String identity = decideIdentity(execution);
+    log.info("Leaving activity '{}'", identity);
 
     String defaultSequenceFlow = (String) execution.getActivity().getProperty("default");
     List<PvmTransition> transitionsToTake = new ArrayList<PvmTransition>();
@@ -185,4 +184,11 @@ public class BpmnActivityBehavior implements Serializable {
     }
   }
 
+  private String decideIdentity(ActivityExecution execution) {
+    String name = execution.getCurrentActivityName();
+    if (name != null && !name.isEmpty()) {
+      return name;
+    }
+    return execution.getCurrentActivityId();
+  }
 }

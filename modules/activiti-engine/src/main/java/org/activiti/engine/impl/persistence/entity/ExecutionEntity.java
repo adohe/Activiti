@@ -13,14 +13,7 @@
 
 package org.activiti.engine.impl.persistence.entity;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.activiti.engine.ActivitiException;
 import org.activiti.engine.EngineServices;
@@ -39,13 +32,7 @@ import org.activiti.engine.impl.history.HistoryManager;
 import org.activiti.engine.impl.interceptor.CommandContext;
 import org.activiti.engine.impl.jobexecutor.AsyncContinuationJobHandler;
 import org.activiti.engine.impl.jobexecutor.TimerDeclarationImpl;
-import org.activiti.engine.impl.pvm.PvmActivity;
-import org.activiti.engine.impl.pvm.PvmException;
-import org.activiti.engine.impl.pvm.PvmExecution;
-import org.activiti.engine.impl.pvm.PvmProcessDefinition;
-import org.activiti.engine.impl.pvm.PvmProcessElement;
-import org.activiti.engine.impl.pvm.PvmProcessInstance;
-import org.activiti.engine.impl.pvm.PvmTransition;
+import org.activiti.engine.impl.pvm.*;
 import org.activiti.engine.impl.pvm.delegate.ActivityExecution;
 import org.activiti.engine.impl.pvm.delegate.ExecutionListenerExecution;
 import org.activiti.engine.impl.pvm.delegate.SignallableActivityBehavior;
@@ -668,6 +655,8 @@ public class ExecutionEntity extends VariableScopeImpl implements ActivityExecut
     if (getTenantId() != null) {
     	message.setTenantId(getTenantId());
     }
+
+    log.info("create a MessageEntity for execution {} with activity {}", getId(), getCurrentActivityName());
 
     Context
       .getCommandContext()

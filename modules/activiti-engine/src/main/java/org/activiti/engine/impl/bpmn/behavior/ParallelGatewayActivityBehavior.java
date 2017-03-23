@@ -72,13 +72,11 @@ public class ParallelGatewayActivityBehavior extends GatewayActivityBehavior {
     if (nbrOfExecutionsJoined==nbrOfExecutionsToJoin) {
       
       // Fork
-      if(log.isDebugEnabled()) {
-        log.debug("parallel gateway '{}' activates: {} of {} joined", activity.getId(), nbrOfExecutionsJoined, nbrOfExecutionsToJoin);
-      }
+      log.info("parallel gateway '{}' activates: {} of {} joined", activity.getId(), nbrOfExecutionsJoined, nbrOfExecutionsToJoin);
       execution.takeAll(outgoingTransitions, joinedExecutions);
       
-    } else if (log.isDebugEnabled()){
-      log.debug("parallel gateway '{}' does not activate: {} of {} joined", activity.getId(), nbrOfExecutionsJoined, nbrOfExecutionsToJoin);
+    } else {
+      log.info("parallel gateway '{}' does not activate: {} of {} joined", activity.getId(), nbrOfExecutionsJoined, nbrOfExecutionsToJoin);
     }
   }
 

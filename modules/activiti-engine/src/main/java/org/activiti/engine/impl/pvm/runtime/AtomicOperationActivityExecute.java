@@ -42,13 +42,12 @@ public class AtomicOperationActivityExecute implements AtomicOperation {
       throw new PvmException("no behavior specified in "+activity);
     }
 
-    log.debug("{} executes {}: {}", execution, activity, activityBehavior.getClass().getName());
+    log.info("{} executes {}: {}", execution.getId(), execution.getCurrentActivityName(), activityBehavior.getClass().getName());
     
     try {
     	if(Context.getProcessEngineConfiguration() != null && Context.getProcessEngineConfiguration().getEventDispatcher().isEnabled()) {
       	Context.getProcessEngineConfiguration().getEventDispatcher().dispatchEvent(
-      			ActivitiEventBuilder.createActivityEvent(ActivitiEventType.ACTIVITY_STARTED, 
-      					execution.getActivity().getId(),
+      			ActivitiEventBuilder.createActivityEvent(ActivitiEventType.ACTIVITY_STARTED, execution.getActivity().getId(),
       					(String) execution.getActivity().getProperty("name"),
       					execution.getId(), 
       					execution.getProcessInstanceId(), 
